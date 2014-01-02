@@ -1,0 +1,16 @@
+sym_links:
+  - target: i3
+    link: ~/.i3
+
+  - target: Xdefaults
+    link: ~/.Xdefaults
+
+  - target: ! "gitconfig.%{flavor}"
+    link: ~/.gitconfig
+
+  - target: vimrc
+    link: ~/.vimrc
+
+  - target: zshrc
+    link: ~/.zshrc
+
