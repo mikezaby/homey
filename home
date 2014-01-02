@@ -21,6 +21,11 @@ class Home < Thor
     end
   end
 
+  desc "setup", "Run the initialize commands that you want"
+  def setup
+    home_file["commands"].each { |command| system command }
+  end
+
   private
 
   def home_file
