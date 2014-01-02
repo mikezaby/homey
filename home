@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+require "rubygems"
+require "thor"
+require "yaml"
+require "fileutils"
+require "pathname"
+
+class Home < Thor
+  desc "create_symlinks", "Creating the sym links that you have set in home.yml"
+  method_option :flavor, type: :string
+  method_option :force, type: :boolean
+  def create_symlinks
+    symlinks = flavorize_group("sym_links", { flavor: options[:flavor], flavorized_attributes: %w(target) })
+    symlinks.each do |sym|
+      paths = replace_home_char(sym['target'], sym['link'])
+      target, link = absolutize_paths(*paths)
+      FileUtils.rm_rf(link) if options[:force]
+      File.symlink target, link
+    end
+  end
+
+  private
+
+  def home_file
+    @home_file ||= begin
+      home = YAML.load_file('home.yml')
+    end
+  end
+
+  def absolutize_paths(*paths)
+    paths.map { |path| Pathname.new(path).expand_path }
+  end
+
+  def replace_home_char(*strings)
+    new_strings = strings.map { |string| string.sub(/^~\//, "#{ENV['HOME']}/") }
+    new_strings.one? ? new_strings.first : new_strings
+  end
+
+  def flavorize_group(group, options = {})
+    flavor = options[:flavor]
+    flavorized_attributes = options[:flavorized_attributes]
+    return home_file[group] if flavor.nil?
+
+    home_file[group].map do |value|
+      value = value.dup
+      flavorized_attributes.each { |attr| value[attr] = flavorize(value[attr], flavor) }
+      value
+    end
+  end
+
+  def flavorize(string, flavor)
+    string.include?("%{flavor}") ? (string % { flavor: flavor }) : string
+  end
+
+  def flavorize!(string, flavor)
+    string.replace(flavorize(string, flavor))
+  end
+end
+
+Home.start
