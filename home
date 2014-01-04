@@ -10,7 +10,7 @@ load "#{File.dirname(__FILE__)}/flavorizer.rb"
 class Home < Thor
   desc "create_symlinks", "Creating the sym links that you have set in home.yml"
   method_option :flavor, type: :string
-  method_option :force, type: :boolean
+  method_option :force, aliases: "-f", type: :boolean
   def create_symlinks
     opts = { flavor: options[:flavor], flavorized_attributes: %w(target) }
     symlinks = Flavorizer::flavorize_group(home_file["sym_links"], opts)
