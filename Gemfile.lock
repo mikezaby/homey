@@ -1,0 +1,16 @@
+PATH
+  remote: .
+  specs:
+    homey (0.0.1)
+      thor (~> 0.18, >= 0.18.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    thor (0.18.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  homey!
