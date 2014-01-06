@@ -36,7 +36,8 @@ module Homey
 
     def home_file
       @home_file ||= begin
-        home = YAML.load_file('home.yml')
+        path = File.join dotfiles_path, "home.yml"
+        home = YAML.load_file(path)
       end
     end
 
