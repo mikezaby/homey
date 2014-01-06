@@ -6,7 +6,7 @@ require 'homey/version'
 Gem::Specification.new do |s|
   s.name        = 'homey'
   s.version     = Homey::VERSION
-  s.date        = '2014-01-05'
+  s.date        = '2014-01-07'
 
   s.summary     = 'A tool to setup your home enviroment'
   s.description = "Homey is a basic tool for your dotfiles. Homey will setup " \
