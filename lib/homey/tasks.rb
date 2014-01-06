@@ -1,5 +1,15 @@
 module Homey
   class Tasks < Thor
+    desc "dotfiles", "Fetching your dotfiles from github"
+    method_option :path, type: :string
+    method_option :force, aliases: "-f", type: :boolean
+    def dotfiles(repo)
+      path = prepare_paths(options.fetch("path", "~/.dotfiles")).first
+      FileUtils.rm_rf(path) if options["force"]
+      command = "git clone git@github.com:#{repo}.git #{path}"
+      system command
+    end
+
     desc "create_symlinks", "Creating the sym links that you have set in home.yml"
     method_option :flavor, type: :string
     method_option :force, aliases: "-f", type: :boolean
