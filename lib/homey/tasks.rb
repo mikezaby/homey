@@ -17,8 +17,7 @@ module Homey
       opts = { flavor: options[:flavor], flavorized_attributes: %w(target) }
       symlinks = Flavorizer::flavorize_group(home_file["sym_links"], opts)
       symlinks.each do |sym|
-        paths = replace_home_char(sym['target'], sym['link'])
-        target, link = absolutize_paths(*paths)
+        target, link = prepare_paths(sym['target'], sym['link'])
         FileUtils.rm_rf(link) if options[:force]
         File.symlink target, link
       end
