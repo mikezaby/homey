@@ -30,6 +30,10 @@ module Homey
 
     private
 
+    def dotfiles_path
+      @dotfiles_path ||= File.open("#{ENV['HOME']}/.homey", 'rb').read
+    end
+
     def home_file
       @home_file ||= begin
         home = YAML.load_file('home.yml')
