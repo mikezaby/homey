@@ -1,5 +1,7 @@
 module Homey
   class Tasks < Thor
+    include PathHelpers
+
     desc "dotfiles", "Fetching your dotfiles from github"
     method_option :path, type: :string
     method_option :force, aliases: "-f", type: :boolean
@@ -30,31 +32,6 @@ module Homey
     desc "setup", "Run the initialize commands that you want"
     def setup
       home_file["commands"].each { |command| system command }
-    end
-
-    private
-
-    def dotfiles_path
-      @dotfiles_path ||= File.open("#{ENV['HOME']}/.homey", 'rb').read
-    end
-
-    def home_file
-      @home_file ||= begin
-        path = File.join dotfiles_path, "home.yml"
-        home = YAML.load_file(path)
-      end
-    end
-
-    def prepare_paths(*paths)
-      absolutize_paths(*replace_home_char(*paths))
-    end
-
-    def absolutize_paths(*paths)
-      paths.map { |path| Pathname.new(path).expand_path(dotfiles_path) }
-    end
-
-    def replace_home_char(*strings)
-      strings.map { |string| string.sub(/^~\//, "#{ENV['HOME']}/") }
     end
   end
 end
