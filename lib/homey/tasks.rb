@@ -46,7 +46,7 @@ module Homey
     end
 
     def absolutize_paths(*paths)
-      paths.map { |path| Pathname.new(path).expand_path }
+      paths.map { |path| Pathname.new(path).expand_path(dotfiles_path) }
     end
 
     def replace_home_char(*strings)
