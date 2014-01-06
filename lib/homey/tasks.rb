@@ -27,13 +27,16 @@ module Homey
       end
     end
 
+    def prepare_paths(*paths)
+      absolutize_paths(*replace_home_char(*paths))
+    end
+
     def absolutize_paths(*paths)
       paths.map { |path| Pathname.new(path).expand_path }
     end
 
     def replace_home_char(*strings)
-      new_strings = strings.map { |string| string.sub(/^~\//, "#{ENV['HOME']}/") }
-      new_strings.one? ? new_strings.first : new_strings
+      strings.map { |string| string.sub(/^~\//, "#{ENV['HOME']}/") }
     end
   end
 end
