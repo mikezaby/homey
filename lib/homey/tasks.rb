@@ -7,7 +7,7 @@ module Homey
     method_option :force, aliases: "-f", type: :boolean
     method_option :local, aliases: "-l", type: :boolean
     def dotfiles(repo)
-      path = prepare_paths(options.fetch("path", "~/.dotfiles")).first
+      path = replace_home_char(options.fetch("path", "~/.dotfiles")).first
       if !options[:local]
         FileUtils.rm_rf(path) if options["force"]
         command = "git clone git@github.com:#{repo}.git #{path}"
